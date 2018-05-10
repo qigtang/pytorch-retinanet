@@ -89,7 +89,8 @@ class FPN(nn.Module):
         So we choose bilinear upsample which supports arbitrary output sizes.
         '''
         _,_,H,W = y.size()
-        return F.upsample(x, size=(H,W), mode='bilinear') + y
+        return F.upsample(x, size=(H,W), mode='nearest') + y
+        #return F.upsample(x, size=(H,W), mode='bilinear') + y
 
     def forward(self, x):
         # Bottom-up

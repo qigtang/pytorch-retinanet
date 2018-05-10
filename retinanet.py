@@ -3,7 +3,7 @@ import torch.nn as nn
 
 from fpn import FPN50
 from torch.autograd import Variable
-
+import torch.onnx
 
 class RetinaNet(nn.Module):
     num_anchors = 9
@@ -52,4 +52,16 @@ def test():
     loc_preds.backward(loc_grads)
     cls_preds.backward(cls_grads)
 
-# test()
+#test()
+def saveonnx():
+    x = torch.randn(2, 3, 224, 224)
+    net = RetinaNet()
+    # Export the model
+    torch.onnx._export(net,             # model being run
+            x,                       # model input (or a tuple for multiple inputs)
+            "retinanet.onnx", # where to save the model (can be a file or file-like object)
+            export_params=True)      # store the trained parameter weights inside the model file
+
+if __name__ == '__main__':
+    saveonnx()
+
